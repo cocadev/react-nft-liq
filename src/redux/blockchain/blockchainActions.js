@@ -48,6 +48,8 @@ export const connect = () => {
       },
     });
     const CONFIG = await configResponse.json();
+
+
     const { ethereum } = window;
     const metamaskIsInstalled = ethereum && ethereum.isMetaMask;
     if (metamaskIsInstalled) {
@@ -60,6 +62,7 @@ export const connect = () => {
         const networkId = await ethereum.request({
           method: "net_version",
         });
+
         if (networkId == CONFIG.NETWORK.ID) {
           const SmartContractObj = new Web3EthContract(
             abi,
