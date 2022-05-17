@@ -205,7 +205,6 @@ function App() {
         style={{ padding: 24, backgroundColor: "#050338" }}
       >
         <s.Container
-          // ai={"center"}
           fd={'row'}
           jc={'space-between'}
           style={{ padding: '12px 24px', backgroundColor: "#050338" }}
@@ -252,7 +251,24 @@ function App() {
 
           <Card style={{ width: 430 }}>
 
+            <s.Container fd={'row'} ai={"center"} jc={'space-between'} style={{ color: '#939499', fontSize: 15 }}>
+              <div>Deposit (Testnet)</div>
+              <s.Container fd={'row'} ai={"center"}>
+                <div>Balance</div><s.SpacerSmall /><s.SpacerSmall />
+                <div style={{ color: '#fff'}}>10,000</div>
+              </s.Container>
+            </s.Container>
+
             <s.SpacerSmall />
+
+            <s.Container fd={'row'} ai={"center"}>
+              <img src="config/images/Liquidus.png" alt="" />
+              <div style={{ marginLeft: 12, fontSize: 19 }}>
+                <div>10,000 LIQ</div>
+                <div style={{ fontSize: 12, color: '#939499', marginTop: 2 }}>$2900.45</div>
+              </div>
+            </s.Container>
+
             <>
 
               <s.SpacerSmall />
@@ -294,9 +310,10 @@ function App() {
               <img src="config/images/Liquidus.png" alt="" />
               <div style={{ marginLeft: 12, fontSize: 19 }}>
                 <div>50.23 BTE</div>
-                <div style={{ fontSize: 12, color: '#939499', marginTop: 2 }}>$.23 BTE</div>
+                <div style={{ fontSize: 12, color: '#939499', marginTop: 2 }}>$15.20 BTE</div>
               </div>
             </s.Container>
+
             <s.SpacerLarge />
             <StyledButton
               onClick={(e) => {
