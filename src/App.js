@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { connect } from "./redux/blockchain/blockchainActions";
-import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
 import Nouislider from 'nouislider-react';
@@ -9,9 +6,12 @@ import numeral from 'numeraljs'
 import get from 'lodash.get'
 import './styles/slider-style.css';
 import "nouislider/distribute/nouislider.css";
+import { useMoralis } from "react-moralis";
+const depositABI = require("./deposit.json");
+const ercABI = require("./abi.json");
 
 const truncate = (input, len) =>
-  input.length > len ? `${input.substring(0, len)}...` : input;
+  input?.length > len ? `${input?.substring(0, len)}...` : input;
 
 export const StyledButton = styled.button`
   padding: 10px;
@@ -88,30 +88,14 @@ export const Range = styled.div`
 `
 
 function App() {
-  const dispatch = useDispatch();
-  const blockchain = useSelector((state) => state.blockchain);
-  const data = useSelector((state) => state.data);
 
-  const [CONFIG, SET_CONFIG] = useState({
-    CONTRACT_ADDRESS: "",
-    SCAN_LINK: "",
-    NETWORK: {
-      NAME: "",
-      SYMBOL: "",
-      ID: 0,
-    },
-    NFT_NAME: "",
-    SYMBOL: "",
-    MAX_SUPPLY: 1,
-    WEI_COST: 0,
-    DISPLAY_COST: 0,
-    GAS_LIMIT: 0,
-    MARKETPLACE: "",
-    MARKETPLACE_LINK: "",
-    SHOW_BACKGROUND: false,
-  });
+  const { isAuthenticated, isWeb3Enabled, account, Moralis, chainId, enableWeb3, isWeb3EnableLoading, authenticate } = useMoralis();
 
   const [range, setRange] = useState(8000);
+
+  useEffect(() => {
+    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
+  }, [isAuthenticated, isWeb3Enabled]);
 
   const formatter = {
     to: (num) => {
@@ -124,11 +108,6 @@ function App() {
 
   const options = {
     connect: 'lower',
-    // pips: {
-    //   mode: 'steps',
-    //   stepped: true,
-    //   density: 2
-    // },
     animate: true,
     animationDuration: 300,
     behaviour: 'tap',
@@ -138,42 +117,31 @@ function App() {
     },
     start: range,
     tooltips: formatter,
-    // pips: {
-    //   mode: 'steps',
-    //   density: 25,
-    //   stepped: true,
-    //   format: formatter
-    // },
     onChange: (args) => {
       const sliderValue = get(args, '[0]')
       setRange(numeral(sliderValue).value())
     }
   }
 
-  const getData = () => {
-    if (blockchain.account !== "" && blockchain.smartContract !== null) {
-      dispatch(fetchData(blockchain.account));
-    }
-  };
-
-  const getConfig = async () => {
-    const configResponse = await fetch("/config/config.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+  const onDeposit = async() => {
+    const request = {
+      chain: chainId,
+      contractAddress: '0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db',
+      functionName: "deposit",
+      abi: depositABI,
+      params: {
+        _amount: 1
       },
-    });
-    const config = await configResponse.json();
-    SET_CONFIG(config);
+    };
+
+    try{
+      await Moralis.executeFunction(request).then(res => console.log('+++++++++', res));
+
+    }catch(e){
+      console.log('+_+eeee+_+', e)
+    }
+
   };
-
-  useEffect(() => {
-    getConfig();
-  }, []);
-
-  useEffect(() => {
-    getData();
-  }, [blockchain.account]);
 
   return (
     <s.Screen>
@@ -189,20 +157,17 @@ function App() {
         >
           <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
 
-          {blockchain.account === "" ||
-            blockchain.smartContract === null ? <StyledButton
-              onClick={(e) => {
-                e.preventDefault();
-                dispatch(connect());
-                getData();
-
+          {!isAuthenticated ? <StyledButton
+              onClick={() => {
+                authenticate({ signingMessage: 'LIQUIDUS AUTHENTICATION'});
               }}
             >
             CONNECT
-          </StyledButton> : <StyledButton style={{ fontSize: 20}}>{truncate(blockchain?.account, 15)}</StyledButton>}
+          </StyledButton> : <StyledButton style={{ fontSize: 20}}>{truncate(account, 15)}</StyledButton>}
         </s.Container>
 
         <s.SpacerSmall />
+
         <ResponsiveWrapper flex={1} style={{ padding: 24 }} test>
           <Card>
             <div style={{ color: '#939499', fontSize: 15 }}>1. Token Prices (BSC mainnet)</div>
@@ -265,6 +230,7 @@ function App() {
                 <StyledButton
                   onClick={(e) => {
                     e.preventDefault();
+                    onDeposit();
                   }}
                 >
                   Deposit
@@ -279,7 +245,7 @@ function App() {
                 marginTop: 12
               }}
             >
-              <StyledLink target={"_blank"} href={CONFIG.SCAN_LINK}>
+              <StyledLink target={"_blank"} href={'https://testnet.bscscan.com/token/0x481E0c66d2cC0bC41AA75D135cC6C7137a5A21EC'}>
                 View Contract
               </StyledLink>
             </s.TextDescription>
@@ -341,16 +307,6 @@ function App() {
           </s.TextDescription>
         </s.Container>
 
-        <s.TextTitle
-          style={{
-            textAlign: "center",
-            fontSize: 16,
-            fontWeight: "bold",
-            color: "var(--accent-text)",
-          }}
-        >Total Supply: &nbsp;
-          {data.totalSupply}
-        </s.TextTitle>
       </s.Container>
     </s.Screen>
   );

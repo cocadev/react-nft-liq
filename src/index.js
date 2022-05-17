@@ -4,11 +4,17 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./redux/store";
 import { Provider } from "react-redux";
+import { MoralisProvider } from "react-moralis";
 import "./styles/reset.css";
+
+const APP_ID = 'bPgvT4mg2IWOvaJ1bSYWE1Cn4i6s6WJyXb2v0ZjB';
+const SERVER_URL = 'https://rkao2dhqvedh.usemoralis.com:2053/server';
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
+      <App />
+    </MoralisProvider>
   </Provider>,
   document.getElementById("root")
 );

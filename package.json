@@ -16,7 +16,9 @@
     "web3-eth-contract": "^1.5.2",
     "nouislider-react": "^3.3.5",
     "lodash.get": "^4.4.2",
-    "numeraljs": "^1.5.6"
+    "numeraljs": "^1.5.6",
+    "moralis": "^1.0.1",
+    "react-moralis": "^1.0.0"
   },
   "resolutions": {
     "react-error-overlay": "6.0.9"
