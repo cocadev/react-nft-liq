@@ -1,18 +1,18 @@
 {
-  "CONTRACT_ADDRESS": "0x4e26dF4D7894183cD9C1804fD2463a85b980207C",
-  "SCAN_LINK": "https://rinkeby.etherscan.io/token/0x4e26dF4D7894183cD9C1804fD2463a85b980207C",
+  "CONTRACT_ADDRESS": "0x481E0c66d2cC0bC41AA75D135cC6C7137a5A21EC",
+  "SCAN_LINK": "https://testnet.bscscan.com/token/0x481E0c66d2cC0bC41AA75D135cC6C7137a5A21EC",
   "NETWORK": {
-    "NAME": "Rinkeby Test",
-    "SYMBOL": "ETH",
-    "ID": 4
+    "NAME": "Binance Smart Chain Testnet",
+    "SYMBOL": "BNB",
+    "ID": 61
   },
-  "NFT_NAME": "Just Mangu It",
-  "SYMBOL": "MANGU",
+  "NFT_NAME": "LIQUIDUS",
+  "SYMBOL": "LIQUIDUS",
   "MAX_SUPPLY": 56,
   "WEI_COST": 20000000000000000,
   "DISPLAY_COST": 0.02,
   "GAS_LIMIT": 285000,
   "MARKETPLACE": "Opeansea",
-  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/mangu3",
+  "MARKETPLACE_LINK": "https://testnet.bscscan.com/address/0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db#code",
   "SHOW_BACKGROUND": true
 }

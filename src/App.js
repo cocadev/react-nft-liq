@@ -12,20 +12,13 @@ export const StyledButton = styled.button`
   padding: 10px;
   border-radius: 50px;
   border: none;
-  background-color: var(--secondary);
+  background-color: #122455;
   padding: 10px;
-  font-weight: bold;
+  // font-weight: bold;
   color: var(--secondary-text);
-  width: 100px;
+  width: 220px;
+  height: 50px;
   cursor: pointer;
-  box-shadow: 0px 6px 0px -2px rgba(250, 250, 250, 0.3);
-  -webkit-box-shadow: 0px 6px 0px -2px rgba(250, 250, 250, 0.3);
-  -moz-box-shadow: 0px 6px 0px -2px rgba(250, 250, 250, 0.3);
-  :active {
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-  }
 `;
 
 export const StyledRoundButton = styled.button`
@@ -90,8 +83,10 @@ export const StyledImg = styled.img`
 `;
 
 export const StyledLink = styled.a`
-  color: var(--secondary);
+  color: #939499;
   text-decoration: none;
+  font-size: 12px;
+  margint-top:20px;
 `;
 
 export const Card = styled.div`
@@ -209,183 +204,80 @@ function App() {
         ai={"center"}
         style={{ padding: 24, backgroundColor: "#050338" }}
       >
-        <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
+        <s.Container
+          // ai={"center"}
+          fd={'row'}
+          jc={'space-between'}
+          style={{ padding: '12px 24px', backgroundColor: "#050338" }}
+        >
+          <StyledLogo alt={"logo"} src={"/config/images/logo.png"} />
+
+          <StyledButton
+            onClick={(e) => {
+              e.preventDefault();
+              dispatch(connect());
+              getData();
+            }}
+          >
+            CONNECT
+          </StyledButton>
+        </s.Container>
+
         <s.SpacerSmall />
         <ResponsiveWrapper flex={1} style={{ padding: 24 }} test>
           <Card>
-            <div style={{ color: '#939499', fontSize: 15}}>1. Token Prices (BSC mainnet)</div>
+            <div style={{ color: '#939499', fontSize: 15 }}>1. Token Prices (BSC mainnet)</div>
             <s.SpacerSmall />
             <s.Container fd={'row'} ai={"center"}>
-              <img src="config/images/bnb.png" alt=""/>
-              <div style={{marginLeft: 12, fontSize: 19}}>BNB - $340.35</div>
+              <img src="config/images/bnb.png" alt="" />
+              <div style={{ marginLeft: 12, fontSize: 19 }}>BNB - $340.35</div>
             </s.Container>
             <s.SpacerSmall />
 
             <s.Container fd={'row'} ai={"center"}>
-              <img src="config/images/Liquidus.png" alt=""/>
-              <div style={{marginLeft: 12, fontSize: 19}}>LIQ - $0.281</div>
+              <img src="config/images/Liquidus.png" alt="" />
+              <div style={{ marginLeft: 12, fontSize: 19 }}>LIQ - $0.281</div>
             </s.Container>
             <s.SpacerLarge />
             <s.SpacerLarge />
 
-            <div style={{ color: '#939499', fontSize: 15}}>2. BNB-LIQ Total Liquidity</div>
+            <div style={{ color: '#939499', fontSize: 15 }}>2. BNB-LIQ Total Liquidity</div>
             <s.SpacerSmall />
             <s.Container fd={'row'} ai={"center"}>
-              <img src="config/images/Group 1.png" alt=""/>
-              <div style={{marginLeft: 12, fontSize: 19}}>$850,300.32</div>
+              <img src="config/images/Group 1.png" alt="" />
+              <div style={{ marginLeft: 12, fontSize: 19 }}>$850,300.32</div>
             </s.Container>
           </Card>
           <s.SpacerLarge />
 
-          <Card style={{ width: 430}}>
-            <s.TextTitle
-              style={{
-                textAlign: "center",
-                fontSize: 50,
-                fontWeight: "bold",
-                color: "var(--accent-text)",
-              }}
-            >
-              {data.totalSupply} / {CONFIG.MAX_SUPPLY}
-            </s.TextTitle>
+          <Card style={{ width: 430 }}>
+
+            <s.SpacerSmall />
+            <>
+
+              <s.SpacerSmall />
+              <s.Container ai={"center"} jc={"center"}>
+                <StyledButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  Deposit
+                </StyledButton>
+              </s.Container>
+
+            </>
+
             <s.TextDescription
               style={{
                 textAlign: "center",
-                color: "var(--primary-text)",
+                marginTop: 12
               }}
             >
               <StyledLink target={"_blank"} href={CONFIG.SCAN_LINK}>
-                {truncate(CONFIG.CONTRACT_ADDRESS, 15)}
+                View Contract
               </StyledLink>
             </s.TextDescription>
-            <s.SpacerSmall />
-            {Number(data.totalSupply) >= CONFIG.MAX_SUPPLY ? (
-              <>
-                <s.TextTitle
-                  style={{ textAlign: "center", color: "var(--accent-text)" }}
-                >
-                  The sale has ended.
-                </s.TextTitle>
-                <s.TextDescription
-                  style={{ textAlign: "center", color: "var(--accent-text)" }}
-                >
-                  You can still find {CONFIG.NFT_NAME} on
-                </s.TextDescription>
-                <s.SpacerSmall />
-                <StyledLink target={"_blank"} href={CONFIG.MARKETPLACE_LINK}>
-                  {CONFIG.MARKETPLACE}
-                </StyledLink>
-              </>
-            ) : (
-              <>
-                <s.TextTitle
-                  style={{ textAlign: "center", color: "var(--accent-text)" }}
-                >
-                  1 {CONFIG.SYMBOL} costs {CONFIG.DISPLAY_COST}{" "}
-                  {CONFIG.NETWORK.SYMBOL}.
-                </s.TextTitle>
-                <s.SpacerXSmall />
-                <s.TextDescription
-                  style={{ textAlign: "center", color: "var(--accent-text)" }}
-                >
-                  Excluding gas fees.
-                </s.TextDescription>
-                <s.SpacerSmall />
-                {blockchain.account === "" ||
-                  blockchain.smartContract === null ? (
-                  <s.Container ai={"center"} jc={"center"}>
-                    <s.TextDescription
-                      style={{
-                        textAlign: "center",
-                        color: "var(--accent-text)",
-                      }}
-                    >
-                      Connect to the {CONFIG.NETWORK.NAME} network
-                    </s.TextDescription>
-                    <s.SpacerSmall />
-                    <StyledButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        dispatch(connect());
-                        getData();
-                      }}
-                    >
-                      CONNECT
-                    </StyledButton>
-                    {blockchain.errorMsg !== "" ? (
-                      <>
-                        <s.SpacerSmall />
-                        <s.TextDescription
-                          style={{
-                            textAlign: "center",
-                            color: "var(--accent-text)",
-                          }}
-                        >
-                          {blockchain.errorMsg}
-                        </s.TextDescription>
-                      </>
-                    ) : null}
-                  </s.Container>
-                ) : (
-                  <>
-                    <s.TextDescription
-                      style={{
-                        textAlign: "center",
-                        color: "var(--accent-text)",
-                      }}
-                    >
-                      {feedback}
-                    </s.TextDescription>
-                    <s.SpacerMedium />
-                    <s.Container ai={"center"} jc={"center"} fd={"row"}>
-                      <StyledRoundButton
-                        style={{ lineHeight: 0.4 }}
-                        disabled={claimingNft ? 1 : 0}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          decrementMintAmount();
-                        }}
-                      >
-                        -
-                      </StyledRoundButton>
-                      <s.SpacerMedium />
-                      <s.TextDescription
-                        style={{
-                          textAlign: "center",
-                          color: "var(--accent-text)",
-                        }}
-                      >
-                        {mintAmount}
-                      </s.TextDescription>
-                      <s.SpacerMedium />
-                      <StyledRoundButton
-                        disabled={claimingNft ? 1 : 0}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          incrementMintAmount();
-                        }}
-                      >
-                        +
-                      </StyledRoundButton>
-                    </s.Container>
-                    <s.SpacerSmall />
-                    <s.Container ai={"center"} jc={"center"} fd={"row"}>
-                      <StyledButton
-                        disabled={claimingNft ? 1 : 0}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          claimNFTs();
-                          getData();
-                        }}
-                      >
-                        {claimingNft ? "BUSY" : "BUY"}
-                      </StyledButton>
-                    </s.Container>
-                  </>
-                )}
-              </>
-            )}
-
             <s.SpacerMedium />
             <s.SpacerMedium />
             <s.SpacerMedium />
@@ -395,12 +287,30 @@ function App() {
           <s.SpacerLarge />
 
           <Card>
-            2. Token Prices (BSC mainnet)
+            <div style={{ color: '#939499', fontSize: 15 }}>Total LIQ Earned (Testnet)</div>
+            <s.SpacerSmall />
+
+            <s.Container fd={'row'} ai={"center"}>
+              <img src="config/images/Liquidus.png" alt="" />
+              <div style={{ marginLeft: 12, fontSize: 19 }}>
+                <div>50.23 BTE</div>
+                <div style={{ fontSize: 12, color: '#939499', marginTop: 2 }}>$.23 BTE</div>
+              </div>
+            </s.Container>
+            <s.SpacerLarge />
+            <StyledButton
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              Harvest
+            </StyledButton>
+
           </Card>
 
         </ResponsiveWrapper>
         <s.SpacerMedium />
-        <s.Container style={{ margin: 50}}>
+        <s.Container style={{ margin: 50 }}>
           <s.TextDescription
             style={{
               color: "#fff",
@@ -408,7 +318,7 @@ function App() {
               marginLeft: 20
             }}
           >
-            LIQ Testnet:<br/>
+            LIQ Testnet:<br />
             https://testnet.bscscan.com/token/0x481E0c66d2cC0bC41AA75D135cC6C7137a5A21EC
 
           </s.TextDescription>
@@ -420,7 +330,7 @@ function App() {
               marginLeft: 20
             }}
           >
-            Staking Contract (for deposit and LIQ earned)<br/>
+            Staking Contract (for deposit and LIQ earned)<br />
             https://testnet.bscscan.com/address/0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db#code
           </s.TextDescription>
         </s.Container>
