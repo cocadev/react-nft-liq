@@ -91,7 +91,7 @@ function App() {
 
   const { isAuthenticated, isWeb3Enabled, account, Moralis, chainId, enableWeb3, isWeb3EnableLoading, authenticate } = useMoralis();
 
-  const [range, setRange] = useState(8000);
+  const [range, setRange] = useState(5000);
 
   useEffect(() => {
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
@@ -124,24 +124,50 @@ function App() {
   }
 
   const onDeposit = async() => {
-    const request = {
+    const request1 = {
       chain: chainId,
-      contractAddress: '0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db',
-      functionName: "deposit",
-      abi: depositABI,
+      contractAddress: '0x481E0c66d2cC0bC41AA75D135cC6C7137a5A21EC',
+      functionName: "approve",
+      abi: ercABI,
       params: {
-        _amount: 1
+        spender: '0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db',
+        amount: range?.toFixed(0) * 1000000000000
       },
     };
-
     try{
-      await Moralis.executeFunction(request).then(res => console.log('+++++++++', res));
-
+      await Moralis.executeFunction(request1);
+      setTimeout(async()=>{
+        const request2 = {
+          chain: chainId,
+          contractAddress: '0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db',
+          functionName: "deposit",
+          abi: depositABI,
+          params: {
+            _amount: range?.toFixed(0) * 1000000000000
+          },
+        };
+        try{
+          await Moralis.executeFunction(request2);
+        }catch(e){
+        }
+      }, 10000)
     }catch(e){
-      console.log('+_+eeee+_+', e)
     }
-
   };
+
+  const onHarvest = async() => {
+    const request3 = {
+      chain: chainId,
+      contractAddress: '0x70716b1a0bf78ab52b9eb3666c30255bb4c7b3db',
+      functionName: "harvest",
+      abi: depositABI,
+    };
+    try{
+      await Moralis.executeFunction(request3);
+    }
+    catch(e){
+    }
+  }
 
   return (
     <s.Screen>
@@ -273,6 +299,7 @@ function App() {
             <StyledButton
               onClick={(e) => {
                 e.preventDefault();
+                onHarvest();
               }}
             >
               Harvest
