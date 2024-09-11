@@ -1,1 +1,1 @@
-# mangu-nft-frontend
+# Liquidus
